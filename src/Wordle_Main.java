@@ -51,9 +51,9 @@ public class Wordle_Main {
     }
 
     static boolean getAnswer(Player player, Game game) {
-        Scanner oku = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         System.out.print("Enter your answer: ");
-        player.answer = oku.next().toUpperCase();
+        player.answer = sc.next().toUpperCase();
 
         if (game.dictList.contains(player.answer)) {
             for (int i = 0; i < 5; i++) {
