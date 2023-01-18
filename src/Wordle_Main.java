@@ -30,7 +30,10 @@ public class Wordle_Main {
         }
 
         if (player.correct) System.out.println("\nCongratulations!");
-        else System.out.println("\nTry Again.");
+        else {
+            System.out.printf("The correct answer is %S.%n", game.answer);
+            System.out.println("\nTry Again.");
+        }
     }
 
     static void writeSlots(Game game) {
