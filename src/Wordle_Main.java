@@ -39,15 +39,13 @@ public class Wordle_Main {
     static void writeSlots(Game game) {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
+                Slot currentSlot = game.slots[i][j];
 
-                if (game.slots[i][j].color == Colors.GREEN) {
-                    System.out.print("\u001b[42;1m" + " " + game.slots[i][j].Char + " " + "\033[0m ");
-
-                } else if (game.slots[i][j].color == Colors.YELLOW) {
-                    System.out.print("\u001b[43;1m" + " " + game.slots[i][j].Char + " " + "\033[0m ");
-
-                } else System.out.print("\u001b[40;1m" + " " + game.slots[i][j].Char + " " + "\033[0m ");
-
+                switch(currentSlot.color) {
+                    case GREEN -> System.out.printf("\u001b[42;1m %C \033[0m ", currentSlot.Char);
+                    case YELLOW -> System.out.printf("\u001b[43;1m %C \033[0m", currentSlot.Char);
+                    default -> System.out.printf("\u001b[40;1m %C \033[0m ", currentSlot.Char);
+                }
             }
             System.out.println("\n");
         }
