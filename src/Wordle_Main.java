@@ -43,7 +43,7 @@ public class Wordle_Main {
 
                 switch (currentSlot.color) {
                     case GREEN -> System.out.printf("\u001b[42;1m %C \033[0m ", currentSlot.Char);
-                    case YELLOW -> System.out.printf("\u001b[43;1m %C \033[0m", currentSlot.Char);
+                    case YELLOW -> System.out.printf("\u001b[43;1m %C \033[0m ", currentSlot.Char);
                     default -> System.out.printf("\u001b[40;1m %C \033[0m ", currentSlot.Char);
                 }
             }
@@ -68,18 +68,19 @@ public class Wordle_Main {
     }
 
     static void findColors(Player player, Game game) {
-
         LinkedHashMap<Character, Integer> letters = new LinkedHashMap<>(game.letters);
+        String answer = game.answer;
 
         for (int i = 0; i < 5; i++) {
-            char Char = game.slots[player.row][i].Char;
+            Slot currentSlot = game.slots[player.row][i];
+            char currentChar = currentSlot.Char;
 
-            if (Char == game.answer.charAt(i) && letters.get(Char) >= 1) {
-                game.slots[player.row][i].color = Colors.GREEN;
-                letters.put(Char, letters.get(Char) - 1);
-            } else if (game.answer.contains(String.valueOf(Char)) && letters.get(Char) >= 1) {
-                game.slots[player.row][i].color = Colors.YELLOW;
-                letters.put(Char, letters.get(Char) - 1);
+            if (currentChar == answer.charAt(i) && letters.get(currentChar) >= 1) {
+                currentSlot.color = Colors.GREEN;
+                letters.put(currentChar, letters.get(currentChar) - 1);
+            } else if (answer.contains(String.valueOf(currentChar)) && letters.get(currentChar) >= 1) {
+                currentSlot.color = Colors.YELLOW;
+                letters.put(currentChar, letters.get(currentChar) - 1);
             }
         }
     }
