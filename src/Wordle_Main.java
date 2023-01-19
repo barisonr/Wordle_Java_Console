@@ -30,21 +30,22 @@ public class Wordle_Main {
         }
 
         if (player.correct) System.out.println("\nCongratulations!");
-        else System.out.println("\nTry Again.");
+        else {
+            System.out.printf("The correct answer is %S.%n", game.answer);
+            System.out.println("\nTry Again.");
+        }
     }
 
     static void writeSlots(Game game) {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
+                Slot currentSlot = game.slots[i][j];
 
-                if (game.slots[i][j].color == Colors.GREEN) {
-                    System.out.print("\u001b[42;1m" + " " + game.slots[i][j].Char + " " + "\033[0m ");
-
-                } else if (game.slots[i][j].color == Colors.YELLOW) {
-                    System.out.print("\u001b[43;1m" + " " + game.slots[i][j].Char + " " + "\033[0m ");
-
-                } else System.out.print("\u001b[40;1m" + " " + game.slots[i][j].Char + " " + "\033[0m ");
-
+                switch (currentSlot.color) {
+                    case GREEN -> System.out.printf("\u001b[42;1m %C \033[0m ", currentSlot.Char);
+                    case YELLOW -> System.out.printf("\u001b[43;1m %C \033[0m ", currentSlot.Char);
+                    default -> System.out.printf("\u001b[40;1m %C \033[0m ", currentSlot.Char);
+                }
             }
             System.out.println("\n");
         }
@@ -67,23 +68,19 @@ public class Wordle_Main {
     }
 
     static void findColors(Player player, Game game) {
-
         LinkedHashMap<Character, Integer> letters = new LinkedHashMap<>(game.letters);
+        String answer = game.answer;
 
         for (int i = 0; i < 5; i++) {
-            char Char = game.slots[player.row][i].Char;
+            Slot currentSlot = game.slots[player.row][i];
+            char currentChar = currentSlot.Char;
 
-            if (Char == game.answer.charAt(i) && letters.get(Char) >= 1) {
-                game.slots[player.row][i].color = Colors.GREEN;
-                letters.put(Char, letters.get(Char) - 1);
-            }
-        }
-        for (int i = 0; i < 5; i++) {
-            char Char = game.slots[player.row][i].Char;
-
-            if (game.answer.contains(String.valueOf(Char)) && letters.get(Char) >= 1) {
-                game.slots[player.row][i].color = Colors.YELLOW;
-                letters.put(Char, letters.get(Char) - 1);
+            if (currentChar == answer.charAt(i) && letters.get(currentChar) >= 1) {
+                currentSlot.color = Colors.GREEN;
+                letters.put(currentChar, letters.get(currentChar) - 1);
+            } else if (answer.contains(String.valueOf(currentChar)) && letters.get(currentChar) >= 1) {
+                currentSlot.color = Colors.YELLOW;
+                letters.put(currentChar, letters.get(currentChar) - 1);
             }
         }
     }
